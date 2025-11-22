@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Edit Paste — Rentry Pro{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+
+<section class="auth-root">
+  <div class="auth-card" style="max-width:700px;">
+    <h2 class="h">Edit Paste</h2>
+    <p class="muted">Update isi atau pengaturan privasi paste kamu.</p>
+
+    <form method="post" class="auth-form">
+      {{ csrf_field() if csrf else '' }}
+
+      <label class="field">
+        <span class="label">Judul</span>
+        <input type="text" name="title" value="{{ paste.title }}" placeholder="Judul (opsional)">
+      </label>
+
+      <label class="field">
+        <span class="label">Isi</span>
+        <textarea name="content" required placeholder="Tulis isi paste di sini...">{{ paste.content }}</textarea>
+      </label>
+
+      <label class="field" style="margin-top:10px;">
+        <input type="checkbox" name="public" value="1" {% if paste.public %}checked{% endif %}>  
+        Public (boleh dilihat semua orang)
+      </label>
+
+      <button class="btn primary" type="submit" style="margin-top:14px;">Simpan</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Register — Rentry Pro{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+<section class="auth-root">
+<div class="auth-card">
+<div class="brand">Rentry <span class="accent">Pro</span></div>
+<h2 class="h">Create an account</h2>
+<p class="muted">Start saving pastes under your username</p>
+
+
+<form method="post" action="/register" class="auth-form" novalidate>
+	{{ form.hidden_tag() }}
+<label class="field">
+<span class="label">Username</span>
+<input name="username" type="text" required autocomplete="username" placeholder="choose a username">
+</label>
+
+
+<label class="field">
+<span class="label">Password</span>
+<div class="pw-wrap">
+<input name="password" type="password" required autocomplete="new-password" placeholder="at least 6 chars">
+<button type="button" class="show-pw" aria-label="Toggle show password">👁️</button>
+</div>
+</label>
+
+
+<button class="btn primary" type="submit">Create account</button>
+</form>
+
+
+<div class="foot">Already have an account? <a href="/login">Login</a></div>
+</div>
+<div class="auth-side">
+<h3>Fast & Minimal</h3>
+<p class="muted">No bloat. Focus on writing and sharing text quickly.</p>
+</div>
+</section>
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% endblock %}

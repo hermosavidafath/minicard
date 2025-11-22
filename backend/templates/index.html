@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Recent Pastes — Rentry Pro{% endblock %}
+{% block content %}
+<section class="card">
+<h2>Recent Public Pastes</h2>
+{% if pastes %}
+<ul class="paste-list">
+{% for p in pastes %}
+<li style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eef2ff">
+<div>
+<a href="/{{ p.slug }}" style="font-weight:600;color:#4c4ddc;text-decoration:none">{{ p.title or p.slug }}</a>
+<div class="muted-sm">{{ p.created_at.strftime('%Y-%m-%d %H:%M') }} {% if p.owner %}— {{ p.owner.username }}{% endif %}</div>
+</div>
+<div>
+<a class="btn" href="/{{ p.slug }}">View</a>
+</div>
+</li>
+{% endfor %}
+</ul>
+{% else %}
+<div class="muted-sm">Belum ada paste publik. <a href="/new">Buat sekarang</a>.</div>
+{% endif %}
+</section>
+{% endblock %}

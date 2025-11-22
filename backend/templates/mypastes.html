@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}My Pastes — Rentry Pro{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+
+<section class="auth-root">
+  <div class="auth-card" style="max-width:800px;">
+    <h2 class="h">My Pastes</h2>
+    <p class="muted">Semua paste yang kamu buat akan muncul di sini.</p>
+
+    {% if pastes %}
+      <ul class="paste-list" style="margin-top:16px; list-style:none; padding:0;">
+        {% for p in pastes %}
+          <li style="padding:12px 0; border-bottom:1px solid #eef2ff;">
+            <a href="/{{ p.slug }}" class="label" style="font-size:16px; color:#4c4ddc; text-decoration:none;">
+              {{ p.title or p.slug }}
+            </a>
+            <div class="muted" style="font-size:13px;">
+              {{ p.created_at.strftime('%Y-%m-%d %H:%M') }}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="muted" style="margin-top:16px;">Belum ada paste. <a href="/new">Buat sekarang</a>.</div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

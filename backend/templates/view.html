@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}{{ paste.title or paste.slug }} — Rentry Pro{% endblock %}
+{% block content %}
+  <section class="card">
+    <h2 style="margin-bottom:6px">{{ paste.title or paste.slug }}</h2>
+    <div class="muted-sm">Created: {{ paste.created_at.strftime('%Y-%m-%d %H:%M') }}{% if paste.owner %} — {{ paste.owner.username }}{% endif %}</div>
+
+    <div style="margin-top:12px">
+      {% if rendered_html %}
+        <div class="card">{{ rendered_html|safe }}</div>
+      {% else %}
+        <pre style="background:#f8fafc;padding:14px;border-radius:8px;white-space:pre-wrap;
+          font-family:monospace">{{ paste.content }}</pre>
+      {% endif %}
+    </div>
+
+    <div style="margin-top:12px">
+      {% if can_edit %}
+        <a class="btn" href="/{{ paste.slug }}/edit">Edit</a>
+        <form method="post" action="/{{ paste.slug }}/delete" style="display:inline;margin-left:8px">
+          <button class="btn" type="submit">Delete</button>
+        </form>
+      {% endif %}
+      <a class="btn" href="/" style="margin-left:8px">Back</a>
+    </div>
+  </section>
+{% endblock %}

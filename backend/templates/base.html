@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Rentry Pro{% endblock %}</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.min.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script>window.addEventListener('load',()=>hljs.highlightAll());</script>
+
+  <style>
+    .container{max-width:1100px;margin:20px auto;padding:0 16px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+    .topbar a{color:inherit;text-decoration:none}
+    .muted-sm{color:#dd844c;font-size:13px}
+    .small-link{font-size:14px; margin-left:8px;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <div>
+        <a href="/" class="branding">Rentry <span style="color:#6c5ce7">Pro</span></a>
+        <div class="muted-sm">Create & share text fast</div>
+      </div>
+
+      <nav>
+        {% if current_user.is_authenticated %}
+          <span class="small-link">Hi, {{ current_user.username }}</span>
+          <a class="small-link" href="/new">New</a>
+          <a class="small-link" href="/mypastes">My Pastes</a>
+          <a class="small-link" href="/logout">Logout</a>
+        {% else %}
+          <a class="small-link" href="/login">Login</a>
+          <a class="small-link" href="/register">Register</a>
+          <a class="small-link" href="/new">New</a>
+        {% endif %}
+      </nav>
+    </header>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div style="margin-bottom:12px;">
+          {% for m in messages %}
+            <div class="card" style="background:#fff3cd;padding:10px;border-radius:8px">
+              {{ m }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

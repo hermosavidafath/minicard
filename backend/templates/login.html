@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Login — Rentry Pro{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+<section class="auth-root">
+<div class="auth-card">
+<div class="brand">Rentry <span class="accent">Pro</span></div>
+<h2 class="h">Welcome back</h2>
+<p class="muted">Login to access your pastes</p>
+
+
+<form method="post" action="/login" class="auth-form" novalidate>
+	{{ form.hidden_tag() }}
+<label class="field">
+<span class="label">Username</span>
+<input name="username" type="text" required autocomplete="username" placeholder="your-username">
+</label>
+
+
+<label class="field">
+<span class="label">Password</span>
+<div class="pw-wrap">
+<input name="password" type="password" required autocomplete="current-password" placeholder="••••••••">
+<button type="button" class="show-pw" aria-label="Toggle show password">👁️</button>
+</div>
+</label>
+
+
+<button class="btn primary" type="submit">Login</button>
+</form>
+
+
+<div class="foot">No account? <a href="/register">Create one</a></div>
+</div>
+<div class="auth-side">
+<h3>Secure & Private</h3>
+<p class="muted">Create public or private pastes. Private pastes are visible only to you.</p>
+</div>
+</section>
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% endblock %}

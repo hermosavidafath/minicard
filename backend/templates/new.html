@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}New Paste — Rentry Pro{% endblock %}
+{% block content %}
+<section class="auth-root">
+<div class="auth-card" style="max-width:800px">
+<h2 class="h">Create a new paste</h2>
+<p class="muted">Choose whether this paste is public or private.</p>
+
+
+<form method="post" action="/new" class="auth-form">
+	{{ form.hidden_tag() }}
+<label class="field">
+<span class="label">Title</span>
+<input type="text" name="title" placeholder="Optional title">
+</label>
+
+
+<label class="field">
+<span class="label">Content</span>
+<textarea name="content" required placeholder="Write your paste here..."></textarea>
+</label>
+
+
+<label class="field">
+<input type="checkbox" name="public" value="1" checked> Public (anyone can see)
+</label>
+
+
+<div style="margin-top:12px">
+<button class="btn primary" type="submit">Publish</button>
+<a href="/" class="btn" style="margin-left:8px;">Cancel</a>
+</div>
+</form>
+</div>
+</section>
+{% endblock %}
