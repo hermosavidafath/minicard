@@ -1,0 +1,36 @@
+{
+  "name": "Rentry Clone",
+  "description": "A pastebin-like service with user profiles - Indonesian version",
+  "repository": "https://github.com/yourusername/rentry-clone",
+  "keywords": ["python", "flask", "pastebin", "profiles", "rentry"],
+  "website": "https://your-demo-url.herokuapp.com",
+  "env": {
+    "SECRET_KEY": {
+      "description": "A secret key for Flask sessions and security",
+      "generator": "secret"
+    },
+    "FLASK_ENV": {
+      "description": "Flask environment",
+      "value": "production"
+    },
+    "RATELIMIT_DEFAULT": {
+      "description": "Rate limiting configuration",
+      "value": "1000 per day;100 per hour"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "addons": [],
+  "scripts": {
+    "postdeploy": "python db_manager.py init && python db_manager.py seed"
+  }
+}

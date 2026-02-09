@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - SECRET_KEY=your-secret-key-here
+      - DATABASE_URL=sqlite:///instance/rentry.sqlite
+    volumes:
+      - ./instance:/app/instance
+    restart: unless-stopped
+
+  # Optional: PostgreSQL database
+  # db:
+  #   image: postgres:15
+  #   environment:
+  #     POSTGRES_DB: rentry
+  #     POSTGRES_USER: rentry
+  #     POSTGRES_PASSWORD: password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   restart: unless-stopped
+
+# volumes:
+#   postgres_data:

@@ -1,10 +1,10 @@
 # backend/app.py
-import os, secrets
+import os, secrets, json
 from flask import Flask, render_template, request, redirect, url_for, flash, abort
 from config import Config
 from extensions import db, login_manager, csrf, limiter
-from models import User, Paste
-from forms import RegisterForm, LoginForm, PasteForm
+from models import User, Paste, Profile
+from forms import RegisterForm, LoginForm, PasteForm, ProfileForm
 from flask_login import login_user, login_required, logout_user, current_user
 from datetime import datetime
 
@@ -41,8 +41,8 @@ def create_app():
     # register routes
     @app.route('/')
     def index():
-        pastes = Paste.query.filter_by(public=True).order_by(Paste.created_at.desc()).limit(50).all()
-        return render_template('index.html', pastes=pastes)
+        profiles = Profile.query.filter_by(public=True).order_by(Profile.created_at.desc()).limit(20).all()
+        return render_template('index.html', profiles=profiles)
 
     @app.route('/register', methods=['GET','POST'])
     def register():
@@ -85,14 +85,14 @@ def create_app():
         form = PasteForm()
         if form.validate_on_submit():
             slug = secrets.token_urlsafe(6)
-            edit_token = secrets.token_urlsafe(16)
             p = Paste(slug=slug, title=form.title.data, content=form.content.data,
-                      public=bool(form.public.data), edit_token=edit_token)
+                      public=bool(form.public.data))
             if current_user.is_authenticated:
                 p.owner = current_user
             db.session.add(p)
             db.session.commit()
-            flash(f'Paste dibuat. Link: {request.url_root.rstrip("/")}/{slug} — Edit token: {edit_token}')
+            # Do not display the edit token in the UI; keep it stored for token-based access only
+            flash(f'Paste dibuat. Link: {request.url_root.rstrip("/")}/{slug}')
             return redirect(url_for('view_paste', slug=slug))
         return render_template('new.html', form=form)
 
@@ -108,8 +108,11 @@ def create_app():
                 rendered_html = markdown2.markdown(p.content)
             except Exception:
                 rendered_html = None
+        # only owner can edit/delete
         can_edit = current_user.is_authenticated and p.owner_id == current_user.id
-        return render_template('view.html', paste=p, rendered_html=rendered_html, can_edit=can_edit)
+        from forms import EmptyForm
+        delete_form = EmptyForm()
+        return render_template('view.html', paste=p, rendered_html=rendered_html, can_edit=can_edit, delete_form=delete_form)
 
     @app.route('/<slug>/edit', methods=['GET','POST'])
     @login_required
@@ -144,6 +147,139 @@ def create_app():
     def mypastes():
         pastes = Paste.query.filter_by(owner_id=current_user.id).order_by(Paste.created_at.desc()).all()
         return render_template('mypastes.html', pastes=pastes)
+
+    # Profile Routes
+    @app.route('/profile/new', methods=['GET','POST'])
+    @login_required
+    def new_profile():
+        form = ProfileForm()
+        if form.validate_on_submit():
+            slug = secrets.token_urlsafe(8)
+            
+            # Build social links JSON
+            social_links = {}
+            if form.instagram.data:
+                social_links['instagram'] = form.instagram.data
+            if form.twitter.data:
+                social_links['twitter'] = form.twitter.data
+            if form.tiktok.data:
+                social_links['tiktok'] = form.tiktok.data
+            if form.youtube.data:
+                social_links['youtube'] = form.youtube.data
+            if form.discord.data:
+                social_links['discord'] = form.discord.data
+            
+            p = Profile(
+                slug=slug,
+                display_name=form.display_name.data or current_user.username,
+                bio=form.bio.data,
+                age=form.age.data,
+                location=form.location.data,
+                interests=form.interests.data,
+                social_links=json.dumps(social_links),
+                avatar_url=form.avatar_url.data,
+                background_color=form.background_color.data or '#1a1a1a',
+                text_color=form.text_color.data or '#ffffff',
+                accent_color=form.accent_color.data or '#ff6b6b',
+                public=bool(form.public.data),
+                owner=current_user
+            )
+            db.session.add(p)
+            db.session.commit()
+            flash(f'Profil dibuat! Link: {request.url_root.rstrip("/")}/p/{slug}')
+            return redirect(url_for('view_profile', slug=slug))
+        return render_template('new_profile.html', form=form)
+
+    @app.route('/p/<slug>')
+    def view_profile(slug):
+        profile = Profile.query.filter_by(slug=slug).first_or_404()
+        if not profile.public:
+            if not current_user.is_authenticated or (profile.owner_id != current_user.id):
+                abort(403)
+        
+        # Parse social links
+        social_links = {}
+        if profile.social_links:
+            try:
+                social_links = json.loads(profile.social_links)
+            except:
+                social_links = {}
+        
+        can_edit = current_user.is_authenticated and profile.owner_id == current_user.id
+        from forms import EmptyForm
+        delete_form = EmptyForm()
+        return render_template('view_profile.html', profile=profile, social_links=social_links, can_edit=can_edit, delete_form=delete_form)
+
+    @app.route('/p/<slug>/edit', methods=['GET','POST'])
+    @login_required
+    def edit_profile(slug):
+        profile = Profile.query.filter_by(slug=slug).first_or_404()
+        if profile.owner_id != current_user.id:
+            flash('Kamu bukan pemilik profil ini')
+            return redirect(url_for('view_profile', slug=slug))
+        
+        # Parse existing social links for form
+        social_links = {}
+        if profile.social_links:
+            try:
+                social_links = json.loads(profile.social_links)
+            except:
+                social_links = {}
+        
+        form = ProfileForm(obj=profile)
+        # Populate social media fields
+        form.instagram.data = social_links.get('instagram', '')
+        form.twitter.data = social_links.get('twitter', '')
+        form.tiktok.data = social_links.get('tiktok', '')
+        form.youtube.data = social_links.get('youtube', '')
+        form.discord.data = social_links.get('discord', '')
+        
+        if form.validate_on_submit():
+            # Update social links
+            new_social_links = {}
+            if form.instagram.data:
+                new_social_links['instagram'] = form.instagram.data
+            if form.twitter.data:
+                new_social_links['twitter'] = form.twitter.data
+            if form.tiktok.data:
+                new_social_links['tiktok'] = form.tiktok.data
+            if form.youtube.data:
+                new_social_links['youtube'] = form.youtube.data
+            if form.discord.data:
+                new_social_links['discord'] = form.discord.data
+            
+            profile.display_name = form.display_name.data or current_user.username
+            profile.bio = form.bio.data
+            profile.age = form.age.data
+            profile.location = form.location.data
+            profile.interests = form.interests.data
+            profile.social_links = json.dumps(new_social_links)
+            profile.avatar_url = form.avatar_url.data
+            profile.background_color = form.background_color.data or '#1a1a1a'
+            profile.text_color = form.text_color.data or '#ffffff'
+            profile.accent_color = form.accent_color.data or '#ff6b6b'
+            profile.public = bool(form.public.data)
+            db.session.commit()
+            flash('Profil berhasil disimpan')
+            return redirect(url_for('view_profile', slug=slug))
+        return render_template('edit_profile.html', form=form, profile=profile)
+
+    @app.route('/p/<slug>/delete', methods=['POST'])
+    @login_required
+    def delete_profile(slug):
+        profile = Profile.query.filter_by(slug=slug).first_or_404()
+        if profile.owner_id != current_user.id:
+            abort(403)
+        db.session.delete(profile)
+        db.session.commit()
+        flash('Profil dihapus')
+        return redirect(url_for('myprofiles'))
+
+    @app.route('/myprofiles')
+    @login_required
+    def myprofiles():
+        profiles = Profile.query.filter_by(owner_id=current_user.id).order_by(Profile.created_at.desc()).all()
+        return render_template('myprofiles.html', profiles=profiles)
 
     @app.errorhandler(403)
     def forbidden(e):

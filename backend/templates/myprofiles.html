@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block title %}Profil Saya - BiodataKu{% endblock %}
+{% block content %}
+
+<section class="card">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2 style="color: #667eea; margin: 0;">Profil Saya</h2>
+    <a href="{{ url_for('new_profile') }}" class="btn-primary">
+      ➕ Buat Profil Baru
+    </a>
+  </div>
+  
+  {% if profiles %}
+    <div style="display: grid; gap: 1.5rem;">
+      {% for profile in profiles %}
+        <div style="background: #f8f9ff; border-radius: 15px; padding: 1.5rem; 
+                    border: 2px solid #e0e7ff; transition: all 0.3s ease;">
+          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; 
+                        background: #e0e7ff; display: flex; align-items: center; 
+                        justify-content: center; font-size: 1.5rem; color: #667eea;">
+              {% if profile.avatar_url %}
+                <img src="{{ profile.avatar_url }}" alt="Avatar" 
+                     style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+              {% else %}
+                👤
+              {% endif %}
+            </div>
+            
+            <div style="flex: 1;">
+              <h3 style="margin: 0 0 0.25rem 0; color: #333;">
+                {{ profile.display_name or profile.owner.username }}
+              </h3>
+              <div style="color: #667eea; font-size: 0.9rem;">
+                {% if profile.public %}
+                  🌍 Publik
+                {% else %}
+                  🔒 Privat
+                {% endif %}
+                • Dibuat {{ profile.created_at.strftime('%d %b %Y') }}
+                • Diupdate {{ profile.updated_at.strftime('%d %b %Y') }}
+              </div>
+            </div>
+          </div>
+          
+          {% if profile.bio %}
+            <p style="color: #666; margin-bottom: 1rem; line-height: 1.5;">
+              {{ profile.bio[:150] + '...' if profile.bio|length > 150 else profile.bio }}
+            </p>
+          {% endif %}
+          
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <a href="{{ url_for('view_profile', slug=profile.slug) }}" 
+               style="background: #667eea; color: white; padding: 0.5rem 1rem; 
+                      border-radius: 20px; text-decoration: none; font-size: 0.9rem; 
+                      transition: all 0.3s ease;">
+              👁️ Lihat
+            </a>
+            <a href="{{ url_for('edit_profile', slug=profile.slug) }}" 
+               style="background: #28a745; color: white; padding: 0.5rem 1rem; 
+                      border-radius: 20px; text-decoration: none; font-size: 0.9rem; 
+                      transition: all 0.3s ease;">
+              ✏️ Edit
+            </a>
+            <button onclick="copyLink('{{ request.url_root.rstrip('/') }}/p/{{ profile.slug }}')"
+                    style="background: #17a2b8; color: white; padding: 0.5rem 1rem; 
+                           border-radius: 20px; border: none; cursor: pointer; font-size: 0.9rem; 
+                           transition: all 0.3s ease;">
+              🔗 Copy Link
+            </button>
+            <form method="POST" action="{{ url_for('delete_profile', slug=profile.slug) }}" 
+                  style="display: inline;" 
+                  onsubmit="return confirm('Yakin ingin menghapus profil {{ profile.display_name or profile.owner.username }}?')">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <button type="submit" 
+                      style="background: #dc3545; color: white; padding: 0.5rem 1rem; 
+                             border-radius: 20px; border: none; cursor: pointer; font-size: 0.9rem; 
+                             transition: all 0.3s ease;">
+                🗑️ Hapus
+              </button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div style="text-align: center; padding: 3rem; color: #666;">
+      <div style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.3;">📝</div>
+      <h3 style="margin-bottom: 1rem; color: #333;">Belum ada profil</h3>
+      <p style="margin-bottom: 2rem;">Buat profil biodata pertama kamu sekarang!</p>
+      <a href="{{ url_for('new_profile') }}" class="btn-primary">Buat Profil Pertama</a>
+    </div>
+  {% endif %}
+</section>
+
+<script>
+function copyLink(url) {
+  navigator.clipboard.writeText(url).then(function() {
+    // Create temporary notification
+    const notification = document.createElement('div');
+    notification.textContent = 'Link berhasil dicopy!';
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      z-index: 1000;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    `;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.remove();
+    }, 3000);
+  }).catch(function() {
+    alert('Gagal copy link. Silakan copy manual: ' + url);
+  });
+}
+</script>
+
+<style>
+  .card > div:hover {
+    border-color: #667eea !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.1);
+  }
+  
+  button:hover,
+  a[href*="view_profile"]:hover,
+  a[href*="edit_profile"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+</style>
+
+{% endblock %}

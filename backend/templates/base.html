@@ -3,52 +3,132 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Rentry Pro{% endblock %}</title>
+  <title>{% block title %}BiodataKu - Platform Biodata Gratis{% endblock %}</title>
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.min.css">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-  <script>window.addEventListener('load',()=>hljs.highlightAll());</script>
-
   <style>
-    .container{max-width:1100px;margin:20px auto;padding:0 16px}
-    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-    .topbar a{color:inherit;text-decoration:none}
-    .muted-sm{color:#dd844c;font-size:13px}
-    .small-link{font-size:14px; margin-left:8px;}
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      margin: 0;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .navbar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 1rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #667eea;
+      text-decoration: none;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: #333;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    
+    .nav-links a:hover {
+      background: #667eea;
+      color: white;
+    }
+    
+    .btn-primary {
+      background: #667eea !important;
+      color: white !important;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 25px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      background: #5a6fd8 !important;
+      transform: translateY(-2px);
+    }
+    
+    .card {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+    
+    .flash-messages {
+      margin-bottom: 2rem;
+    }
+    
+    .flash-message {
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .muted-sm {
+      color: #666;
+      font-size: 13px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <header class="topbar">
-      <div>
-        <a href="/" class="branding">Rentry <span style="color:#6c5ce7">Pro</span></a>
-        <div class="muted-sm">Create & share text fast</div>
-      </div>
-
-      <nav>
+    <nav class="navbar">
+      <a href="/" class="logo">BiodataKu</a>
+      
+      <div class="nav-links">
         {% if current_user.is_authenticated %}
-          <span class="small-link">Hi, {{ current_user.username }}</span>
-          <a class="small-link" href="/new">New</a>
-          <a class="small-link" href="/mypastes">My Pastes</a>
-          <a class="small-link" href="/logout">Logout</a>
+          <span style="color: #666;">Hi, {{ current_user.username }}</span>
+          <a href="{{ url_for('new_profile') }}">Buat Profil</a>
+          <a href="{{ url_for('myprofiles') }}">Profil Saya</a>
+          <a href="{{ url_for('new_paste') }}">New Paste</a>
+          <a href="{{ url_for('mypastes') }}">My Pastes</a>
+          <a href="{{ url_for('logout') }}">Logout</a>
         {% else %}
-          <a class="small-link" href="/login">Login</a>
-          <a class="small-link" href="/register">Register</a>
-          <a class="small-link" href="/new">New</a>
+          <a href="{{ url_for('login') }}">Login</a>
+          <a href="{{ url_for('register') }}" class="btn-primary">Daftar Gratis</a>
         {% endif %}
-      </nav>
-    </header>
+      </div>
+    </nav>
 
     {% with messages = get_flashed_messages() %}
       {% if messages %}
-        <div style="margin-bottom:12px;">
-          {% for m in messages %}
-            <div class="card" style="background:#fff3cd;padding:10px;border-radius:8px">
-              {{ m }}
-            </div>
+        <div class="flash-messages">
+          {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
           {% endfor %}
         </div>
       {% endif %}

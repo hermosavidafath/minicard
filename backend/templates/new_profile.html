@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block title %}Buat Profil Baru - BiodataKu{% endblock %}
+{% block content %}
+
+<section class="card">
+  <h2 style="color: #667eea; margin-bottom: 2rem; text-align: center;">Buat Profil Biodata Baru</h2>
+  
+  <form method="POST" style="max-width: 600px; margin: 0 auto;">
+    {{ form.hidden_tag() }}
+    
+    <div style="margin-bottom: 2rem;">
+      <h3 style="color: #333; margin-bottom: 1rem; border-bottom: 2px solid #667eea; padding-bottom: 0.5rem;">
+        📝 Informasi Dasar
+      </h3>
+      
+      <div style="margin-bottom: 1rem;">
+        {{ form.display_name.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
+        {{ form.display_name(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="Nama yang akan ditampilkan") }}
+      </div>
+      
+      <div style="margin-bottom: 1rem;">
+        {{ form.bio.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
+        {{ form.bio(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem; min-height: 100px; resize: vertical;", placeholder="Ceritakan tentang diri kamu...") }}
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div>
+          {{ form.age.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
+          {{ form.age(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="Contoh: 20 tahun") }}
+        </div>
+        <div>
+          {{ form.location.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
+          {{ form.location(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="Contoh: Jakarta, Indonesia") }}
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 1rem; margin-top: 1rem;">
+        {{ form.interests.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
+        {{ form.interests(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem; min-height: 80px; resize: vertical;", placeholder="Hobi, minat, atau hal yang kamu suka...") }}
+      </div>
+    </div>
+    
+    <div style="margin-bottom: 2rem;">
+      <h3 style="color: #333; margin-bottom: 1rem; border-bottom: 2px solid #667eea; padding-bottom: 0.5rem;">
+        🔗 Social Media
+      </h3>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div>
+          {{ form.instagram.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
+          {{ form.instagram(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="@username") }}
+        </div>
+        <div>
+          {{ form.twitter.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
+          {{ form.twitter(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="@username") }}
+        </div>
+        <div>
+          {{ form.tiktok.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
+          {{ form.tiktok(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="@username") }}
+        </div>
+        <div>
+          {{ form.youtube.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
+          {{ form.youtube(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="Channel name") }}
+        </div>
+      </div>
+      
+      <div style="margin-top: 1rem;">
+        {{ form.discord.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
+        {{ form.discord(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="username#1234") }}
+      </div>
+    </div>
+    
+    <div style="margin-bottom: 2rem;">
+      <h3 style="color: #333; margin-bottom: 1rem; border-bottom: 2px solid #667eea; padding-bottom: 0.5rem;">
+        🎨 Kustomisasi Tampilan
+      </h3>
+      
+      <div style="margin-bottom: 1rem;">
+        {{ form.avatar_url.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
+        {{ form.avatar_url(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="https://example.com/foto-kamu.jpg") }}
+        <small style="color: #666; font-size: 0.85rem;">Upload foto ke imgur.com atau layanan lain, lalu copy link-nya</small>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+        <div>
+          {{ form.background_color.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
+          {{ form.background_color(type="color", style="width: 100%; height: 50px; border: 2px solid #e0e7ff; border-radius: 10px; cursor: pointer;") }}
+        </div>
+        <div>
+          {{ form.text_color.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
+          {{ form.text_color(type="color", style="width: 100%; height: 50px; border: 2px solid #e0e7ff; border-radius: 10px; cursor: pointer;") }}
+        </div>
+        <div>
+          {{ form.accent_color.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
+          {{ form.accent_color(type="color", style="width: 100%; height: 50px; border: 2px solid #e0e7ff; border-radius: 10px; cursor: pointer;") }}
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-bottom: 2rem;">
+      <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+        {{ form.public() }}
+        <span style="font-weight: bold; color: #333;">Profil dapat diakses publik</span>
+      </label>
+      <small style="color: #666; margin-left: 1.5rem;">Jika dicentang, profil kamu akan muncul di halaman utama dan bisa dilihat siapa saja</small>
+    </div>
+    
+    <div style="text-align: center;">
+      <button type="submit" class="btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+        🚀 Buat Profil
+      </button>
+    </div>
+  </form>
+</section>
+
+<style>
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+  
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #667eea;
+  }
+</style>
+
+{% endblock %}

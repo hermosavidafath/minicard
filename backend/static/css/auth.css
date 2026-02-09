@@ -1,7 +1,7 @@
 /* auth.css — modern minimal auth UI */
-:root{--bg: #f6f8fb; --card:#ffffff; --muted:#6b7280; --accent:#6c5ce7; --glass: rgba(255,255,255,0.6)}
+:root{--bg: #f6f8fb; --card:#ffffff; --muted:#6b7280; --accent:#e38232; --glass: rgba(255,255,255,0.6)}
 *{box-sizing:border-box}
-body{background:linear-gradient(180deg,#eef2ff, #f6f8fb);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial;color:#0f172a}
+body{background:linear-gradient(180deg,#eef2ff, #f6f8fb);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial;color:#ff6201}
 
 .auth-root{
   display:grid;
@@ -35,8 +35,8 @@ textarea{
   width:100%;
   padding:12px;
   border-radius:8px;
-  border:1px solid #e6edf3;
-  background:#fff;
+  border:1px solid #f7b488;
+  background:#fcd0a9;
 }
 
 textarea{
@@ -63,7 +63,7 @@ textarea{
 }
 
 .btn.primary{
-  background:linear-gradient(90deg,var(--accent),#4c8bf5);
+  background:linear-gradient(90deg,var(--accent),#f3be8c);
   color:#fff;
 }
 

@@ -9,7 +9,7 @@
     <p class="muted">Update isi atau pengaturan privasi paste kamu.</p>
 
     <form method="post" class="auth-form">
-      {{ csrf_field() if csrf else '' }}
+      {{ form.hidden_tag() }}
 
       <label class="field">
         <span class="label">Judul</span>

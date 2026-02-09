@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% block title %}{{ profile.display_name or profile.owner.username }} - BiodataKu{% endblock %}
+{% block content %}
+
+<div style="background: {{ profile.background_color }}; color: {{ profile.text_color }}; 
+            border-radius: 20px; padding: 3rem; margin-bottom: 2rem; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative; overflow: hidden;">
+  
+  <!-- Background Pattern -->
+  <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; 
+              background-image: radial-gradient(circle at 20% 80%, {{ profile.accent_color }}22 0%, transparent 50%),
+                                radial-gradient(circle at 80% 20%, {{ profile.accent_color }}22 0%, transparent 50%);"></div>
+  
+  <div style="position: relative; z-index: 1;">
+    <!-- Header Section -->
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <div style="width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 2rem; 
+                  background: {{ profile.accent_color }}; display: flex; align-items: center; 
+                  justify-content: center; font-size: 4rem; border: 5px solid {{ profile.text_color }}22;">
+        {% if profile.avatar_url %}
+          <img src="{{ profile.avatar_url }}" alt="Avatar" 
+               style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        {% else %}
+          👤
+        {% endif %}
+      </div>
+      
+      <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; color: {{ profile.text_color }};">
+        {{ profile.display_name or profile.owner.username }}
+      </h1>
+      
+      {% if profile.age or profile.location %}
+        <div style="font-size: 1.2rem; opacity: 0.8; margin-bottom: 1rem;">
+          {% if profile.age %}{{ profile.age }}{% endif %}
+          {% if profile.age and profile.location %} • {% endif %}
+          {% if profile.location %}📍 {{ profile.location }}{% endif %}
+        </div>
+      {% endif %}
+      
+      {% if profile.bio %}
+        <p style="font-size: 1.1rem; line-height: 1.6; max-width: 600px; margin: 0 auto; opacity: 0.9;">
+          {{ profile.bio }}
+        </p>
+      {% endif %}
+    </div>
+    
+    <!-- Content Sections -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+      
+      <!-- Interests Section -->
+      {% if profile.interests %}
+        <div style="background: {{ profile.text_color }}15; border-radius: 15px; padding: 2rem; 
+                    border: 2px solid {{ profile.accent_color }}30;">
+          <h3 style="color: {{ profile.accent_color }}; margin-bottom: 1rem; font-size: 1.3rem;">
+            🎯 Hobi & Minat
+          </h3>
+          <p style="line-height: 1.6; opacity: 0.9;">{{ profile.interests }}</p>
+        </div>
+      {% endif %}
+      
+      <!-- Social Media Section -->
+      {% if social_links %}
+        <div style="background: {{ profile.text_color }}15; border-radius: 15px; padding: 2rem; 
+                    border: 2px solid {{ profile.accent_color }}30;">
+          <h3 style="color: {{ profile.accent_color }}; margin-bottom: 1rem; font-size: 1.3rem;">
+            🔗 Social Media
+          </h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            {% if social_links.instagram %}
+              <a href="https://instagram.com/{{ social_links.instagram.lstrip('@') }}" target="_blank"
+                 style="color: {{ profile.text_color }}; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; 
+                        padding: 0.5rem; border-radius: 8px; background: {{ profile.accent_color }}20; transition: all 0.3s ease;">
+                📷 Instagram: @{{ social_links.instagram.lstrip('@') }}
+              </a>
+            {% endif %}
+            {% if social_links.twitter %}
+              <a href="https://twitter.com/{{ social_links.twitter.lstrip('@') }}" target="_blank"
+                 style="color: {{ profile.text_color }}; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; 
+                        padding: 0.5rem; border-radius: 8px; background: {{ profile.accent_color }}20; transition: all 0.3s ease;">
+                🐦 Twitter: @{{ social_links.twitter.lstrip('@') }}
+              </a>
+            {% endif %}
+            {% if social_links.tiktok %}
+              <a href="https://tiktok.com/@{{ social_links.tiktok.lstrip('@') }}" target="_blank"
+                 style="color: {{ profile.text_color }}; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; 
+                        padding: 0.5rem; border-radius: 8px; background: {{ profile.accent_color }}20; transition: all 0.3s ease;">
+                🎵 TikTok: @{{ social_links.tiktok.lstrip('@') }}
+              </a>
+            {% endif %}
+            {% if social_links.youtube %}
+              <a href="https://youtube.com/{{ social_links.youtube }}" target="_blank"
+                 style="color: {{ profile.text_color }}; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; 
+                        padding: 0.5rem; border-radius: 8px; background: {{ profile.accent_color }}20; transition: all 0.3s ease;">
+                📺 YouTube: {{ social_links.youtube }}
+              </a>
+            {% endif %}
+            {% if social_links.discord %}
+              <div style="color: {{ profile.text_color }}; display: flex; align-items: center; gap: 0.5rem; 
+                          padding: 0.5rem; border-radius: 8px; background: {{ profile.accent_color }}20;">
+                💬 Discord: {{ social_links.discord }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    
+    <!-- Action Buttons -->
+    {% if can_edit %}
+      <div style="text-align: center; margin-top: 3rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="{{ url_for('edit_profile', slug=profile.slug) }}" 
+           style="background: {{ profile.accent_color }}; color: white; padding: 0.75rem 1.5rem; 
+                  border-radius: 25px; text-decoration: none; transition: all 0.3s ease;">
+          ✏️ Edit Profil
+        </a>
+        
+        <form method="POST" action="{{ url_for('delete_profile', slug=profile.slug) }}" 
+              style="display: inline;" 
+              onsubmit="return confirm('Yakin ingin menghapus profil ini?')">
+          {{ delete_form.hidden_tag() }}
+          <button type="submit" 
+                  style="background: #ff4757; color: white; padding: 0.75rem 1.5rem; 
+                         border-radius: 25px; border: none; cursor: pointer; transition: all 0.3s ease;">
+            🗑️ Hapus Profil
+          </button>
+        </form>
+      </div>
+    {% endif %}
+    
+    <!-- Share Section -->
+    <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; 
+                border-top: 2px solid {{ profile.text_color }}20;">
+      <p style="opacity: 0.7; margin-bottom: 1rem;">Bagikan profil ini:</p>
+      <div style="background: {{ profile.text_color }}15; padding: 1rem; border-radius: 10px; 
+                  font-family: monospace; word-break: break-all; font-size: 0.9rem;">
+        {{ request.url }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Back to Home -->
+<div style="text-align: center;">
+  <a href="{{ url_for('index') }}" 
+     style="color: white; text-decoration: none; padding: 0.75rem 1.5rem; 
+            background: rgba(255,255,255,0.2); border-radius: 25px; 
+            backdrop-filter: blur(10px); transition: all 0.3s ease;">
+    ← Kembali ke Beranda
+  </a>
+</div>
+
+<style>
+  a[href*="instagram"]:hover,
+  a[href*="twitter"]:hover,
+  a[href*="tiktok"]:hover,
+  a[href*="youtube"]:hover {
+    transform: translateX(5px);
+    background: {{ profile.accent_color }}40 !important;
+  }
+  
+  button:hover,
+  a[href*="edit_profile"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+</style>
+
+{% endblock %}
