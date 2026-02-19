@@ -41,8 +41,7 @@ def create_app():
     # register routes
     @app.route('/')
     def index():
-        profiles = Profile.query.filter_by(public=True).order_by(Profile.created_at.desc()).limit(20).all()
-        return render_template('index.html', profiles=profiles)
+        return render_template('index.html')
 
     @app.route('/register', methods=['GET','POST'])
     def register():
@@ -292,8 +291,12 @@ def create_app():
 if __name__ == '__main__':
     app = create_app()
     with app.app_context():
-        # create tables if not present
+        # create tables if not present - PENTING untuk PostgreSQL
         db.create_all()
-        db_path = app.config.get('SQLALCHEMY_DATABASE_URI', '')
-        print('Using DB:', db_path)
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=True)
+        print('✅ Database tables created')
+        db_uri = app.config.get('SQLALCHEMY_DATABASE_URI', '')
+        if 'postgresql' in db_uri:
+            print('✅ Using PostgreSQL database')
+        else:
+            print('⚠️  Warning: Not using PostgreSQL!')
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=False)

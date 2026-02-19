@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Register — Rentry Pro{% endblock %}
+{% block title %}Register{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
 <section class="auth-root">
@@ -31,10 +31,6 @@
 
 
 <div class="foot">Already have an account? <a href="/login">Login</a></div>
-</div>
-<div class="auth-side">
-<h3>Fast & Minimal</h3>
-<p class="muted">No bloat. Focus on writing and sharing text quickly.</p>
 </div>
 </section>
 <script src="{{ url_for('static', filename='js/auth.js') }}"></script>

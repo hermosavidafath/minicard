@@ -4,12 +4,26 @@
 
 <div style="background: {{ profile.background_color }}; color: {{ profile.text_color }}; 
             border-radius: 20px; padding: 3rem; margin-bottom: 2rem; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative; overflow: hidden;">
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative;">
   
   <!-- Background Pattern -->
   <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; 
               background-image: radial-gradient(circle at 20% 80%, {{ profile.accent_color }}22 0%, transparent 50%),
                                 radial-gradient(circle at 80% 20%, {{ profile.accent_color }}22 0%, transparent 50%);"></div>
+  
+  <!-- Decorative Stickers -->
+  <img src="{{ url_for('static', filename='picture/dolie.png') }}" alt="sticker" 
+       style="position: absolute; top: 10%; left: 5%; width: 60px; height: 60px; opacity: 0.9; z-index: 2; animation: float 3s ease-in-out infinite;">
+  <img src="{{ url_for('static', filename='picture/meongi.png') }}" alt="sticker" 
+       style="position: absolute; top: 15%; right: 8%; width: 70px; height: 70px; opacity: 0.9; z-index: 2; animation: float 4s ease-in-out infinite;">
+  <img src="{{ url_for('static', filename='picture/tonyang.png') }}" alt="sticker" 
+       style="position: absolute; top: 35%; left: 8%; width: 65px; height: 65px; opacity: 0.9; z-index: 2; animation: float 3.5s ease-in-out infinite;">
+  <img src="{{ url_for('static', filename='picture/ddolbyeong.png') }}" alt="sticker" 
+       style="position: absolute; bottom: 25%; right: 5%; width: 55px; height: 55px; opacity: 0.9; z-index: 2; animation: float 4.5s ease-in-out infinite;">
+  <img src="{{ url_for('static', filename='picture/rakbam.png') }}" alt="sticker" 
+       style="position: absolute; bottom: 10%; left: 10%; width: 70px; height: 70px; opacity: 0.9; z-index: 2; animation: float 3.8s ease-in-out infinite;">
+  <img src="{{ url_for('static', filename='picture/rizuko.png') }}" alt="sticker" 
+       style="position: absolute; bottom: 15%; right: 12%; width: 60px; height: 60px; opacity: 0.9; z-index: 2; animation: float 4.2s ease-in-out infinite;">
   
   <div style="position: relative; z-index: 1;">
     <!-- Header Section -->
@@ -150,6 +164,15 @@
 </div>
 
 <style>
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-10px) rotate(5deg);
+    }
+  }
+  
   a[href*="instagram"]:hover,
   a[href*="twitter"]:hover,
   a[href*="tiktok"]:hover,
@@ -162,6 +185,14 @@
   a[href*="edit_profile"]:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  
+  /* Responsive stickers for mobile */
+  @media (max-width: 768px) {
+    img[alt="sticker"] {
+      width: 40px !important;
+      height: 40px !important;
+    }
   }
 </style>
 

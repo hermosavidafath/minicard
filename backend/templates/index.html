@@ -1,91 +1,91 @@
 {% extends 'base.html' %}
-{% block title %}BiodataKu - Platform Biodata Gratis{% endblock %}
+{% block title %}BiodataKu - Buat Biodata Personal Gratis{% endblock %}
 {% block content %}
 
-{% if not current_user.is_authenticated %}
+<!-- Hero Section -->
 <div style="text-align: center; color: white; margin-bottom: 3rem;">
-  <h1 style="font-size: 3rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+  <h1 style="font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); font-weight: bold;">
     Buat Biodata Kamu Gratis!
   </h1>
-  <p style="font-size: 1.2rem; opacity: 0.9; margin-bottom: 2rem;">
-    Platform untuk membuat halaman biodata personal yang bisa diakses siapa saja
+  <p style="font-size: 1.3rem; margin-bottom: 2.5rem; opacity: 0.95; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+    Platform untuk membuat halaman biodata personal yang bisa diakses siapa saja. Bagikan link biodata kamu ke teman, keluarga, atau media sosial!
   </p>
-  <a href="{{ url_for('register') }}" class="btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
-    Mulai Sekarang
-  </a>
+  
+  {% if current_user.is_authenticated %}
+    <a href="{{ url_for('new_profile') }}" class="btn-primary" style="font-size: 1.2rem; padding: 1.2rem 2.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+      ➕ Buat Biodata Baru
+    </a>
+  {% else %}
+    <a href="{{ url_for('register') }}" class="btn-primary" style="font-size: 1.2rem; padding: 1.2rem 2.5rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+      Mulai Sekarang - Gratis!
+    </a>
+  {% endif %}
 </div>
-{% endif %}
 
-<section class="card">
-  <h2 style="color: #667eea; margin-bottom: 2rem; text-align: center;">
-    {% if profiles %}Profil Terbaru{% else %}Selamat Datang di BiodataKu{% endif %}
+<!-- Features Section -->
+<section class="card" style="margin-bottom: 2rem;">
+  <h2 style="color: #667eea; margin-bottom: 2rem; text-align: center; font-size: 2rem;">
+    Kenapa BiodataKu?
   </h2>
   
-  {% if profiles %}
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
-      {% for profile in profiles %}
-        <a href="{{ url_for('view_profile', slug=profile.slug) }}" 
-           style="text-decoration: none; color: inherit; display: block; 
-                  background: #f8f9ff; border-radius: 15px; padding: 1.5rem; 
-                  transition: all 0.3s ease; border: 2px solid transparent;">
-          
-          <div style="text-align: center; margin-bottom: 1rem;">
-            <div style="width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 1rem; 
-                        background: #e0e7ff; display: flex; align-items: center; justify-content: center; 
-                        font-size: 2rem; color: #667eea;">
-              {% if profile.avatar_url %}
-                <img src="{{ profile.avatar_url }}" alt="Avatar" 
-                     style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-              {% else %}
-                👤
-              {% endif %}
-            </div>
-            
-            <h3 style="margin: 0 0 0.5rem 0; color: #333; font-size: 1.3rem;">
-              {{ profile.display_name or profile.owner.username }}
-            </h3>
-            
-            {% if profile.age or profile.location %}
-              <div style="color: #667eea; font-size: 0.9rem; margin-bottom: 1rem;">
-                {% if profile.age %}{{ profile.age }}{% endif %}
-                {% if profile.age and profile.location %} • {% endif %}
-                {% if profile.location %}{{ profile.location }}{% endif %}
-              </div>
-            {% endif %}
-          </div>
-          
-          {% if profile.bio %}
-            <p style="color: #666; text-align: center; line-height: 1.5; margin-bottom: 1rem; font-size: 0.95rem;">
-              {{ profile.bio[:120] + '...' if profile.bio|length > 120 else profile.bio }}
-            </p>
-          {% endif %}
-          
-          <div style="text-align: center; color: #999; font-size: 0.85rem;">
-            Dibuat {{ profile.created_at.strftime('%d %b %Y') }}
-          </div>
-        </a>
-      {% endfor %}
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
+    
+    <div style="text-align: center; padding: 2rem; background: #f8f9ff; border-radius: 15px; border: 2px solid #e0e7ff;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">🎨</div>
+      <h3 style="color: #667eea; margin-bottom: 0.5rem;">Kustomisasi Penuh</h3>
+      <p style="color: #666; line-height: 1.6;">Atur warna, foto profil, dan konten sesuai kepribadian kamu</p>
     </div>
-  {% else %}
-    <div style="text-align: center; padding: 3rem; color: #666;">
-      <div style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.3;">📝</div>
-      <h3 style="margin-bottom: 1rem; color: #333;">Belum ada profil yang dibuat</h3>
-      <p style="margin-bottom: 2rem;">Jadilah yang pertama membuat biodata di platform ini!</p>
-      
-      {% if current_user.is_authenticated %}
-        <a href="{{ url_for('new_profile') }}" class="btn-primary">Buat Profil Pertama</a>
-      {% else %}
-        <a href="{{ url_for('register') }}" class="btn-primary">Daftar untuk Membuat Profil</a>
-      {% endif %}
+    
+    <div style="text-align: center; padding: 2rem; background: #f8f9ff; border-radius: 15px; border: 2px solid #e0e7ff;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">🔗</div>
+      <h3 style="color: #667eea; margin-bottom: 0.5rem;">Link Mudah Dibagikan</h3>
+      <p style="color: #666; line-height: 1.6;">Dapatkan link unik yang bisa dibagikan ke mana saja</p>
     </div>
-  {% endif %}
+    
+    <div style="text-align: center; padding: 2rem; background: #f8f9ff; border-radius: 15px; border: 2px solid #e0e7ff;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+      <h3 style="color: #667eea; margin-bottom: 0.5rem;">Cepat & Gratis</h3>
+      <p style="color: #666; line-height: 1.6;">Buat biodata dalam hitungan menit, tanpa biaya apapun</p>
+    </div>
+    
+  </div>
 </section>
 
+<!-- CTA Section -->
+{% if not current_user.is_authenticated %}
+<section class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center;">
+  <h2 style="color: white; margin-bottom: 1rem; font-size: 2rem;">
+    Siap Membuat Biodata Kamu?
+  </h2>
+  <p style="margin-bottom: 2rem; font-size: 1.1rem; opacity: 0.9;">
+    Daftar sekarang dan buat biodata personal kamu dalam 5 menit!
+  </p>
+  <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+    <a href="{{ url_for('register') }}" 
+       style="background: white; color: #667eea; padding: 1rem 2rem; border-radius: 25px; 
+              text-decoration: none; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+      Daftar Gratis
+    </a>
+    <a href="{{ url_for('login') }}" 
+       style="background: transparent; color: white; padding: 1rem 2rem; border-radius: 25px; 
+              text-decoration: none; border: 2px solid white; transition: all 0.3s ease;">
+      Sudah Punya Akun? Login
+    </a>
+  </div>
+</section>
+{% endif %}
+
 <style>
-  a[href*="view_profile"]:hover {
+  .card > div:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.15);
-    border-color: #667eea !important;
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+  }
+  
+  a[href*="register"]:hover,
+  a[href*="login"]:hover,
+  a[href*="new_profile"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3) !important;
   }
 </style>
 

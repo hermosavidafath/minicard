@@ -16,6 +16,14 @@ def check_requirements():
     """Check if all requirements are met"""
     print("🔍 Checking deployment requirements...")
     
+    # Check if psycopg2 is installed
+    try:
+        import psycopg2
+        print("✅ psycopg2-binary installed")
+    except ImportError:
+        print("❌ psycopg2-binary not installed. Run: pip install psycopg2-binary")
+        return False
+    
     # Check if gunicorn is installed
     try:
         import gunicorn
@@ -23,6 +31,19 @@ def check_requirements():
     except ImportError:
         print("❌ Gunicorn not installed. Run: pip install gunicorn")
         return False
+    
+    # Check DATABASE_URL
+    database_url = os.environ.get('DATABASE_URL')
+    if not database_url:
+        print("❌ DATABASE_URL environment variable not set!")
+        print("   Set it to your PostgreSQL URL")
+        return False
+    elif 'postgresql' not in database_url:
+        print("⚠️  DATABASE_URL should be PostgreSQL, not SQLite!")
+        print("   Current:", database_url[:50] + "...")
+        return False
+    else:
+        print("✅ DATABASE_URL configured (PostgreSQL)")
     
     # Check if all required files exist
     required_files = [

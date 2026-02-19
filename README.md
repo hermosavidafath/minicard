@@ -2,6 +2,44 @@
 
 Aplikasi web seperti rentry.co yang memungkinkan users membuat paste dan profile personal.
 
+## ⚠️ PENTING: PostgreSQL Required!
+
+**SQLite TIDAK COCOK untuk production web app!**
+- File database hilang saat restart di cloud hosting
+- Tidak support multiple concurrent users
+- Render/Heroku tidak menyimpan file permanen
+
+**✅ Aplikasi ini WAJIB pakai PostgreSQL untuk production!**
+
+---
+
+## 🚀 Quick Deploy ke Render (Gratis!)
+
+### 1️⃣ Fork Repository
+Fork repository ini ke GitHub kamu
+
+### 2️⃣ Deploy Database
+1. Login ke [render.com](https://render.com)
+2. New → PostgreSQL → Create (Free plan)
+3. Copy **Internal Database URL**
+
+### 3️⃣ Deploy Web App
+1. New → Web Service → Connect GitHub
+2. Root Directory: `backend`
+3. Build: `pip install -r requirements.txt`
+4. Start: `gunicorn wsgi:application`
+5. Environment Variables:
+   - `DATABASE_URL` = [paste URL dari step 2]
+   - `SECRET_KEY` = [generate random string]
+   - `FLASK_ENV` = `production`
+
+### 4️⃣ Done! 🎉
+Aplikasi live dalam 5-10 menit!
+
+**📖 Panduan lengkap**: [RENDER_GUIDE.md](backend/RENDER_GUIDE.md)
+
+---
+
 ## ✨ Features
 
 - 📝 **Paste Management**: Buat, edit, hapus paste dengan markdown support
@@ -11,26 +49,15 @@ Aplikasi web seperti rentry.co yang memungkinkan users membuat paste dan profile
 - 📱 **Responsive**: Mobile-friendly design
 - 🔒 **Privacy**: Public/private paste dan profile
 - ⚡ **Rate Limiting**: Protection dari spam
+- 🗄️ **PostgreSQL**: Production-ready database
 
-## 🚀 Quick Deploy
-
-### Heroku (1-Click Deploy)
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
-### Railway
-```bash
-railway up
-```
-
-### Render
-1. Fork repository ini
-2. Connect ke Render
-3. Deploy otomatis
+---
 
 ## 🛠️ Local Development
 
 ### Prerequisites
 - Python 3.11+
+- PostgreSQL database
 - Git
 
 ### Setup
@@ -42,125 +69,188 @@ cd rentry-project/backend
 # Install dependencies
 pip install -r requirements.txt
 
-# Setup database
-python db_manager.py init
-python db_manager.py seed  # Optional: sample data
+# Set environment variable
+export DATABASE_URL="postgresql://user:password@localhost:5432/rentry_dev"
 
 # Run application
-python run.py
+python app.py
 ```
 
-Aplikasi akan berjalan di http://localhost:5000
+**⚠️ Catatan**: Tidak ada mode SQLite untuk development. Harus pakai PostgreSQL!
+
+---
+
+## 🗄️ Database
+
+**PostgreSQL Only** - SQLAlchemy ORM
+
+### Models:
+- **User**: Authentication dan user data
+- **Profile**: User profiles dengan customization  
+- **Paste**: Text pastes dengan markdown support
+
+### Local PostgreSQL Setup:
+```bash
+# Install PostgreSQL
+# Ubuntu: sudo apt install postgresql
+# macOS: brew install postgresql
+# Windows: Download dari postgresql.org
+
+# Create database
+createdb rentry_dev
+
+# Set environment
+export DATABASE_URL="postgresql://username:password@localhost:5432/rentry_dev"
+```
+
+---
+
+## 🌐 Deployment Options
+
+### Render (Recommended - Free)
+- PostgreSQL: Free (1GB)
+- Web Service: Free (750 hours/month)
+- **Guide**: [RENDER_GUIDE.md](backend/RENDER_GUIDE.md)
+
+### Heroku
+- PostgreSQL: Paid ($9/month minimum)
+- Dyno: $7/month
+- **Guide**: [DEPLOYMENT.md](backend/DEPLOYMENT.md)
+
+### Railway
+- Usage-based pricing (~$5/month)
+- **Guide**: [DEPLOYMENT.md](backend/DEPLOYMENT.md)
+
+---
+
+## ⚙️ Environment Variables
+
+**Required**:
+```bash
+DATABASE_URL=postgresql://user:password@host:port/database
+SECRET_KEY=your-super-secret-key
+FLASK_ENV=production
+```
+
+**Optional**:
+```bash
+RATELIMIT_DEFAULT=1000 per day;100 per hour
+```
+
+---
+
+## 🎨 Features Detail
+
+### Paste Features
+- Markdown rendering dengan syntax highlighting
+- Public/private visibility
+- Edit/delete untuk owner
+- Anonymous paste support (dengan owner_id NULL)
+- Rate limiting protection
+
+### Profile Features  
+- Custom display name dan bio
+- Social media links (Instagram, Twitter, TikTok, YouTube, Discord)
+- Color customization (background, text, accent)
+- Avatar URL support
+- Public/private profiles
+- Profile discovery page
+
+### Security Features
+- CSRF protection (Flask-WTF)
+- Rate limiting (Flask-Limiter) 
+- Secure session cookies
+- Password hashing (Werkzeug)
+- Input validation (WTForms)
+- SQL injection protection (SQLAlchemy ORM)
+
+---
 
 ## 📁 Project Structure
 
 ```
 backend/
 ├── app.py              # Main Flask application
-├── wsgi.py             # WSGI entry point for production
-├── config.py           # Configuration
+├── wsgi.py             # WSGI entry point
+├── config.py           # PostgreSQL configuration
 ├── models.py           # Database models
 ├── forms.py            # WTForms
 ├── extensions.py       # Flask extensions
-├── db_manager.py       # Database management
-├── requirements.txt    # Dependencies
-├── Procfile           # Heroku process file
-├── Dockerfile         # Docker configuration
-├── instance/          # Database files
+├── requirements.txt    # Dependencies (includes psycopg2-binary)
+├── Procfile           # Process file
+├── render.yaml        # Render configuration
 ├── templates/         # HTML templates
 └── static/           # CSS/JS files
 ```
 
-## 🗄️ Database
+---
 
-Menggunakan SQLAlchemy dengan SQLite (default) atau PostgreSQL (production).
+## 🔧 Development Commands
 
-### Models:
-- **User**: Authentication dan user data
-- **Profile**: User profiles dengan customization
-- **Paste**: Text pastes dengan markdown support
-
-### Management:
 ```bash
-python db_manager.py check    # Status database
-python db_manager.py backup   # Backup database
-python db_manager.py migrate  # Update struktur
+# Check database connection
+python -c "from config import Config; print(Config.SQLALCHEMY_DATABASE_URI)"
+
+# Test app
+python app.py
+
+# Production test
+gunicorn wsgi:application
 ```
 
-## 🌐 Deployment
+---
 
-Aplikasi siap deploy ke berbagai platform:
+## 🆘 Troubleshooting
 
-- **Heroku**: One-click deploy dengan button di atas
-- **Railway**: `railway up`
-- **Render**: Connect GitHub repository
-- **DigitalOcean**: App Platform
-- **Docker**: `docker-compose up`
-
-Lihat [DEPLOYMENT.md](backend/DEPLOYMENT.md) untuk panduan lengkap.
-
-## ⚙️ Configuration
-
-### Environment Variables
+### Database Connection Error
 ```bash
-SECRET_KEY=your-secret-key
-FLASK_ENV=production
-DATABASE_URL=your-database-url
-RATELIMIT_DEFAULT=1000 per day;100 per hour
+# Check DATABASE_URL
+echo $DATABASE_URL
+
+# Test connection
+python -c "import psycopg2; psycopg2.connect('$DATABASE_URL')"
 ```
 
-### Production Setup
+### Missing psycopg2
 ```bash
-cd backend
-python deploy.py  # Check readiness
-gunicorn wsgi:application  # Test production server
+pip install psycopg2-binary
 ```
 
-## 🎨 Features Detail
+### Tables Not Created
+Tables auto-create on first run. Check logs for errors.
 
-### Paste Features
-- Markdown rendering
-- Public/private visibility
-- Edit/delete untuk owner
-- Anonymous paste support
-- Rate limiting
-
-### Profile Features
-- Custom display name dan bio
-- Social media links (Instagram, Twitter, TikTok, YouTube, Discord)
-- Color customization (background, text, accent)
-- Avatar support
-- Public/private profiles
-
-### Security
-- CSRF protection
-- Rate limiting
-- Secure session cookies
-- Password hashing
-- Input validation
+---
 
 ## 🤝 Contributing
 
 1. Fork repository
 2. Create feature branch
-3. Commit changes
-4. Push ke branch
+3. Test dengan PostgreSQL
+4. Commit changes
 5. Create Pull Request
+
+---
 
 ## 📄 License
 
-MIT License - lihat [LICENSE](LICENSE) file.
+MIT License
 
-## 🆘 Support
-
-- 📖 Dokumentasi: Lihat file `.md` di folder backend
-- 🐛 Issues: Create GitHub issue
-- 💬 Diskusi: GitHub Discussions
+---
 
 ## 🔗 Demo
 
-Live demo: [Your deployed URL here]
+**Live Demo**: [Your Render URL]
 
-Default users (setelah seed):
-- Username: `admin`, Password: `admin123`
-- Username: `demo`, Password: `demo123`
+**Test Account**: Register sendiri (no default users untuk security)
+
+---
+
+## 📚 Documentation
+
+- [Render Deployment Guide](backend/RENDER_GUIDE.md)
+- [General Deployment Guide](backend/DEPLOYMENT.md)
+- [Database Documentation](backend/DATABASE.md)
+
+---
+
+**⚡ Ready for Production dengan PostgreSQL!** 🚀
