@@ -188,8 +188,36 @@
   /* Responsive stickers for mobile */
   @media (max-width: 768px) {
     img[alt="sticker"] {
-      width: 40px !important;
-      height: 40px !important;
+      width: 35px !important;
+      height: 35px !important;
+    }
+    
+    /* Adjust profile card padding on mobile */
+    div[style*="padding: 3rem"] {
+      padding: 1.5rem !important;
+    }
+    
+    /* Smaller avatar on mobile */
+    div[style*="width: 150px; height: 150px"] {
+      width: 100px !important;
+      height: 100px !important;
+      font-size: 2.5rem !important;
+    }
+    
+    /* Smaller heading on mobile */
+    h1 {
+      font-size: 1.8rem !important;
+    }
+    
+    /* Stack content sections on mobile */
+    div[style*="grid-template-columns: repeat(auto-fit"] {
+      grid-template-columns: 1fr !important;
+    }
+    
+    /* Adjust button sizes on mobile */
+    button, a[href*="edit_profile"] {
+      padding: 0.6rem 1.2rem !important;
+      font-size: 0.9rem !important;
     }
   }
 </style>

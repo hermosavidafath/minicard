@@ -134,6 +134,31 @@ function copyLink(url) {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
   }
+  
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .card > div:first-child {
+      flex-direction: column;
+      align-items: flex-start !important;
+      gap: 1rem;
+    }
+    
+    .card > div:first-child h2 {
+      font-size: 1.5rem;
+    }
+    
+    .card > div:first-child a {
+      width: 100%;
+      text-align: center;
+    }
+    
+    /* Smaller buttons on mobile */
+    div[style*="display: flex; gap: 0.75rem"] a,
+    div[style*="display: flex; gap: 0.75rem"] button {
+      font-size: 0.8rem !important;
+      padding: 0.4rem 0.7rem !important;
+    }
+  }
 </style>
 
 {% endblock %}
