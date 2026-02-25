@@ -154,8 +154,6 @@
           <span style="color: #666;">hi, {{ current_user.username }}</span>
           <a href="{{ url_for('new_profile') }}">new card</a>
           <a href="{{ url_for('myprofiles') }}">my cards</a>
-          <a href="{{ url_for('new_paste') }}">new paste</a>
-          <a href="{{ url_for('mypastes') }}">my pastes</a>
           <a href="{{ url_for('logout') }}">logout</a>
         {% else %}
           <a href="{{ url_for('login') }}">login</a>
