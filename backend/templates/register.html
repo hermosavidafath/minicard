@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-{% block title %}Register{% endblock %}
+{% block title %}sign up{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
 <section class="auth-root">
 <div class="auth-card">
-<div class="brand">Rentry <span class="accent">Pro</span></div>
-<h2 class="h">Create an account</h2>
-<p class="muted">Start saving pastes under your username</p>
+<div class="brand">mycard</div>
+<h2 class="h">create an account</h2>
+<p class="muted">start creating your personal cards</p>
 
 
 <form method="post" action="/register" class="auth-form" novalidate>
@@ -26,11 +26,11 @@
 </label>
 
 
-<button class="btn primary" type="submit">Create account</button>
+<button class="btn primary" type="submit">create account</button>
 </form>
 
 
-<div class="foot">Already have an account? <a href="/login">Login</a></div>
+<div class="foot">already have an account? <a href="/login">login</a></div>
 </div>
 </section>
 <script src="{{ url_for('static', filename='js/auth.js') }}"></script>

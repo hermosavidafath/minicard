@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}My Card{% endblock %}</title>
+  <title>{% block title %}mycard{% endblock %}</title>
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.min.css">
@@ -107,19 +107,19 @@
 <body>
   <div class="container">
     <nav class="navbar">
-      <a href="/" class="logo">BiodataKu</a>
+      <a href="/" class="logo">mycard</a>
       
       <div class="nav-links">
         {% if current_user.is_authenticated %}
-          <span style="color: #666;">Hi, {{ current_user.username }}</span>
-          <a href="{{ url_for('new_profile') }}">Buat Profil</a>
-          <a href="{{ url_for('myprofiles') }}">Profil Saya</a>
-          <a href="{{ url_for('new_paste') }}">New Paste</a>
-          <a href="{{ url_for('mypastes') }}">My Pastes</a>
-          <a href="{{ url_for('logout') }}">Logout</a>
+          <span style="color: #666;">hi, {{ current_user.username }}</span>
+          <a href="{{ url_for('new_profile') }}">new card</a>
+          <a href="{{ url_for('myprofiles') }}">my cards</a>
+          <a href="{{ url_for('new_paste') }}">new paste</a>
+          <a href="{{ url_for('mypastes') }}">my pastes</a>
+          <a href="{{ url_for('logout') }}">logout</a>
         {% else %}
-          <a href="{{ url_for('login') }}">Login</a>
-          <a href="{{ url_for('register') }}" class="btn-primary">Daftar Gratis</a>
+          <a href="{{ url_for('login') }}">login</a>
+          <a href="{{ url_for('register') }}" class="btn-primary">sign up free</a>
         {% endif %}
       </div>
     </nav>

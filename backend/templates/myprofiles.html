@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-{% block title %}My Card{% endblock %}
+{% block title %}my cards{% endblock %}
 {% block content %}
 
 <section class="card">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-    <h2 style="color: #667eea; margin: 0;">Profil Saya</h2>
+    <h2 style="color: #667eea; margin: 0;">my cards</h2>
     <a href="{{ url_for('new_profile') }}" class="btn-primary">
-      ➕ Create new profile
+      ➕ create new card
     </a>
   </div>
   
@@ -33,12 +33,12 @@
               </h3>
               <div style="color: #667eea; font-size: 0.9rem;">
                 {% if profile.public %}
-                  🌍 Publik
+                  🌍 public
                 {% else %}
-                  🔒 Privat
+                  🔒 private
                 {% endif %}
-                • Dibuat {{ profile.created_at.strftime('%d %b %Y') }}
-                • Diupdate {{ profile.updated_at.strftime('%d %b %Y') }}
+                • created {{ profile.created_at.strftime('%d %b %Y') }}
+                • updated {{ profile.updated_at.strftime('%d %b %Y') }}
               </div>
             </div>
           </div>
@@ -54,29 +54,29 @@
                style="background: #667eea; color: white; padding: 0.5rem 1rem; 
                       border-radius: 20px; text-decoration: none; font-size: 0.9rem; 
                       transition: all 0.3s ease;">
-              👁️ Lihat
+              👁️ view
             </a>
             <a href="{{ url_for('edit_profile', slug=profile.slug) }}" 
                style="background: #28a745; color: white; padding: 0.5rem 1rem; 
                       border-radius: 20px; text-decoration: none; font-size: 0.9rem; 
                       transition: all 0.3s ease;">
-              ✏️ Edit
+              ✏️ edit
             </a>
             <button onclick="copyLink('{{ request.url_root.rstrip('/') }}/p/{{ profile.slug }}')"
                     style="background: #17a2b8; color: white; padding: 0.5rem 1rem; 
                            border-radius: 20px; border: none; cursor: pointer; font-size: 0.9rem; 
                            transition: all 0.3s ease;">
-              🔗 Copy Link
+              🔗 copy link
             </button>
             <form method="POST" action="{{ url_for('delete_profile', slug=profile.slug) }}" 
                   style="display: inline;" 
-                  onsubmit="return confirm('Yakin ingin menghapus profil {{ profile.display_name or profile.owner.username }}?')">
+                  onsubmit="return confirm('are you sure you want to delete {{ profile.display_name or profile.owner.username }}?')">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
               <button type="submit" 
                       style="background: #dc3545; color: white; padding: 0.5rem 1rem; 
                              border-radius: 20px; border: none; cursor: pointer; font-size: 0.9rem; 
                              transition: all 0.3s ease;">
-                🗑️ Hapus
+                🗑️ delete
               </button>
             </form>
           </div>
@@ -86,9 +86,9 @@
   {% else %}
     <div style="text-align: center; padding: 3rem; color: #666;">
       <div style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.3;">📝</div>
-      <h3 style="margin-bottom: 1rem; color: #333;">Belum ada profil</h3>
-      <p style="margin-bottom: 2rem;">Buat profil biodata pertama kamu sekarang!</p>
-      <a href="{{ url_for('new_profile') }}" class="btn-primary">Buat Profil Pertama</a>
+      <h3 style="margin-bottom: 1rem; color: #333;">no cards yet</h3>
+      <p style="margin-bottom: 2rem;">create your first bio card now!</p>
+      <a href="{{ url_for('new_profile') }}" class="btn-primary">create first card</a>
     </div>
   {% endif %}
 </section>
@@ -98,7 +98,7 @@ function copyLink(url) {
   navigator.clipboard.writeText(url).then(function() {
     // Create temporary notification
     const notification = document.createElement('div');
-    notification.textContent = 'Link berhasil dicopy!';
+    notification.textContent = 'link copied!';
     notification.style.cssText = `
       position: fixed;
       top: 20px;
@@ -116,7 +116,7 @@ function copyLink(url) {
       notification.remove();
     }, 3000);
   }).catch(function() {
-    alert('Gagal copy link. Silakan copy manual: ' + url);
+    alert('failed to copy. please copy manually: ' + url);
   });
 }
 </script>

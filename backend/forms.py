@@ -11,27 +11,27 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
 
 class ProfileForm(FlaskForm):
-    display_name = StringField('Nama Tampilan', validators=[Length(max=100)])
-    bio = TextAreaField('Bio/Tentang Kamu', validators=[Length(max=500)])
-    age = StringField('Umur', validators=[Length(max=20)])
-    location = StringField('Lokasi', validators=[Length(max=100)])
-    interests = TextAreaField('Hobi/Minat', validators=[Length(max=300)])
+    display_name = StringField('display name', validators=[DataRequired(), Length(max=100)])
+    bio = TextAreaField('about you', validators=[Optional()])
+    age = StringField('age', validators=[Optional(), Length(max=20)])
+    location = StringField('location', validators=[Optional(), Length(max=100)])
+    interests = TextAreaField('hobbies & interests', validators=[Optional()])
     
     # Social Media Links
-    instagram = StringField('Instagram', validators=[Optional(), Length(max=100)])
-    twitter = StringField('Twitter/X', validators=[Optional(), Length(max=100)])
-    tiktok = StringField('TikTok', validators=[Optional(), Length(max=100)])
-    youtube = StringField('YouTube', validators=[Optional(), Length(max=100)])
-    discord = StringField('Discord', validators=[Optional(), Length(max=100)])
+    instagram = StringField('instagram', validators=[Optional(), Length(max=100)])
+    twitter = StringField('twitter/x', validators=[Optional(), Length(max=100)])
+    tiktok = StringField('tiktok', validators=[Optional(), Length(max=100)])
+    youtube = StringField('youtube', validators=[Optional(), Length(max=100)])
+    discord = StringField('discord', validators=[Optional(), Length(max=100)])
     
-    avatar_url = StringField('Link Foto Profil', validators=[Optional(), URL(), Length(max=500)])
+    avatar_url = StringField('profile picture link', validators=[Optional(), URL(), Length(max=500)])
     
     # Customization
-    background_color = StringField('Warna Background', validators=[Length(max=7)], default='#1a1a1a')
-    text_color = StringField('Warna Teks', validators=[Length(max=7)], default='#ffffff')
-    accent_color = StringField('Warna Aksen', validators=[Length(max=7)], default='#ff6b6b')
+    background_color = StringField('background color', validators=[Length(max=7)], default='#1a1a1a')
+    text_color = StringField('text color', validators=[Length(max=7)], default='#ffffff')
+    accent_color = StringField('accent color', validators=[Length(max=7)], default='#ff6b6b')
     
-    public = BooleanField('Profil Publik', default=True)
+    public = BooleanField('public profile', default=True)
 
 class PasteForm(FlaskForm):
     title = StringField('Title', validators=[Length(max=200)])

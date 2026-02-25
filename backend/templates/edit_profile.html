@@ -1,48 +1,48 @@
 {% extends 'base.html' %}
-{% block title %}Edit {% endblock %}
+{% block title %}edit card{% endblock %}
 {% block content %}
 
 <section class="card">
-  <h2 style="color: #667eea; margin-bottom: 2rem; text-align: center;">Edit Profil Biodata</h2>
+  <h2 style="color: #667eea; margin-bottom: 2rem; text-align: center;">edit your card</h2>
   
   <form method="POST" style="max-width: 600px; margin: 0 auto;">
     {{ form.hidden_tag() }}
     
     <div style="margin-bottom: 2rem;">
       <h3 style="color: #333; margin-bottom: 1rem; border-bottom: 2px solid #667eea; padding-bottom: 0.5rem;">
-        📝 Informasi Dasar
+        📝 basic info
       </h3>
       
       <div style="margin-bottom: 1rem;">
         {{ form.display_name.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
-        {{ form.display_name(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="Nama yang akan ditampilkan") }}
+        {{ form.display_name(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="the name you want to show") }}
       </div>
       
       <div style="margin-bottom: 1rem;">
         {{ form.bio.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
-        {{ form.bio(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem; min-height: 100px; resize: vertical;", placeholder="Ceritakan tentang diri kamu...") }}
+        {{ form.bio(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem; min-height: 100px; resize: vertical;", placeholder="tell us about yourself...") }}
       </div>
       
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
         <div>
           {{ form.age.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
-          {{ form.age(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="Contoh: 20 tahun") }}
+          {{ form.age(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="e.g. 20 y.o") }}
         </div>
         <div>
           {{ form.location.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
-          {{ form.location(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="Contoh: Jakarta, Indonesia") }}
+          {{ form.location(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="e.g. jakarta, indonesia") }}
         </div>
       </div>
       
       <div style="margin-bottom: 1rem; margin-top: 1rem;">
         {{ form.interests.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
-        {{ form.interests(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem; min-height: 80px; resize: vertical;", placeholder="Hobi, minat, atau hal yang kamu suka...") }}
+        {{ form.interests(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem; min-height: 80px; resize: vertical;", placeholder="hobbies, interests, or things you like...") }}
       </div>
     </div>
     
     <div style="margin-bottom: 2rem;">
       <h3 style="color: #333; margin-bottom: 1rem; border-bottom: 2px solid #667eea; padding-bottom: 0.5rem;">
-        🔗 Social Media
+        🔗 social media
       </h3>
       
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
@@ -60,7 +60,7 @@
         </div>
         <div>
           {{ form.youtube.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
-          {{ form.youtube(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="Channel name") }}
+          {{ form.youtube(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="channel name") }}
         </div>
       </div>
       
@@ -72,13 +72,13 @@
     
     <div style="margin-bottom: 2rem;">
       <h3 style="color: #333; margin-bottom: 1rem; border-bottom: 2px solid #667eea; padding-bottom: 0.5rem;">
-        🎨 Kustomisasi Tampilan
+        🎨 customize appearance
       </h3>
       
       <div style="margin-bottom: 1rem;">
         {{ form.avatar_url.label(style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333;") }}
-        {{ form.avatar_url(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="https://example.com/foto-kamu.jpg") }}
-        <small style="color: #666; font-size: 0.85rem;">Upload foto ke imgur.com atau layanan lain, lalu copy link-nya</small>
+        {{ form.avatar_url(style="width: 100%; padding: 0.75rem; border: 2px solid #e0e7ff; border-radius: 10px; font-size: 1rem;", placeholder="https://example.com/your-photo.jpg") }}
+        <small style="color: #666; font-size: 0.85rem;">upload photo to imgur.com or other service, then copy the link</small>
       </div>
       
       <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
@@ -100,19 +100,19 @@
     <div style="margin-bottom: 2rem;">
       <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
         {{ form.public() }}
-        <span style="font-weight: bold; color: #333;">Profil dapat diakses publik</span>
+        <span style="font-weight: bold; color: #333;">make profile public</span>
       </label>
-      <small style="color: #666; margin-left: 1.5rem;">Jika dicentang, profil kamu akan muncul di halaman utama dan bisa dilihat siapa saja</small>
+      <small style="color: #666; margin-left: 1.5rem;">if checked, your profile will appear on the homepage and can be viewed by anyone</small>
     </div>
     
     <div style="text-align: center; display: flex; gap: 1rem; justify-content: center;">
       <button type="submit" class="btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
-        💾 Simpan Perubahan
+        💾 save changes
       </button>
       <a href="{{ url_for('view_profile', slug=profile.slug) }}" 
          style="background: #6c757d; color: white; padding: 1rem 2rem; border-radius: 25px; 
                 text-decoration: none; font-size: 1.1rem; transition: all 0.3s ease;">
-        ❌ Batal
+        ❌ cancel
       </a>
     </div>
   </form>
