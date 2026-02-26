@@ -258,6 +258,7 @@ def create_app():
             profile.text_color = form.text_color.data or '#ffffff'
             profile.accent_color = form.accent_color.data or '#ff6b6b'
             profile.public = bool(form.public.data)
+            profile.updated_at = datetime.utcnow()  # Manual update timestamp
             db.session.commit()
             flash('Profil berhasil disimpan')
             return redirect(url_for('view_profile', slug=slug))
